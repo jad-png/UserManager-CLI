@@ -2,8 +2,6 @@ package models
 
 import "fmt"
 
-import "awesomeProject/internal/models"
-
 type ErrInvalidUser struct {
 	Field  string
 	Reason string
