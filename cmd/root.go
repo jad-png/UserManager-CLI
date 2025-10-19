@@ -56,7 +56,7 @@ var (
 
 func init() {
 	// Global flags
-	rootCmd.PersistentFlags().StringP("config", "c", "", "config file (default is $HOME/.user-manager.yaml)")
+	rootCmd.PersistentFlags().StringP(" ", "c", "", "config file (default is $HOME/.user-manager.yaml)")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "verbose output")
 
 	// Setup subcommands first
