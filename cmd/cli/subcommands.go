@@ -48,3 +48,27 @@ func init() {
 
 	// Add user subcommands to user command
 }
+
+// helper method to get command (to be linked from root.go)
+func getUserCommand() *cobra.Command {
+	return &cobra.Command{Use: "user"}
+}
+
+func setupAuthCommands() {
+	authLoginCmd := &cobra.Command{
+		Use: "Login [username]";
+		Short: "Login to the system",
+		Args:  cobra.ExactArgs(1),
+		//Run: Login
+	}
+
+	authLogoutCmd := &cobra.Command{
+		Use: "Logout",
+		Short: "Logout the system",
+		//Run: Logout
+	}
+}
+
+func getAuthCommand() *cobra.Command {
+	return &cobra.Command{Use: "auth"} // placeholder
+}
