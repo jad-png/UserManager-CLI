@@ -38,3 +38,16 @@ func (u *User) Validate() error {
 	}
 	return nil
 }
+
+func (u *User) Update(name, email string, age int) {
+	if name != "" {
+		u.Name = name
+	}
+	if email != "" {
+		u.Email = email
+	}
+	if age >= 0 {
+		u.Age = age
+	}
+	u.UpdatedAt = time.Now()
+}
