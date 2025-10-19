@@ -34,3 +34,5 @@ func init() {
 	// TODO: add subcommands
 	// exemple: rootCmd.AddCommand(ExempleCmd)
 }
+
+// TODO: define Subcommands in rootCmd style
