@@ -11,7 +11,7 @@ func init() {
 		Use:   "create [name] [email] [age]",
 		Short: "Create a new user",
 		Args:  cobra.ExactArgs(3),
-		Run:   createUser,
+		Run:   CreateUser,
 	}
 	userCreateCmd.Flags().StringP("role", "r", "user", "User role")
 
@@ -19,13 +19,13 @@ func init() {
 		Use:   "get [id]",
 		Short: "Get user by ID",
 		Args:  cobra.ExactArgs(1),
-		Run:   getUser,
+		Run:   GetUser,
 	}
 
 	userListCmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all users",
-		Run:   listUsers,
+		Run:   ListUsers,
 	}
 	userListCmd.Flags().IntP("limit", "l", 50, "Maximum users to display")
 
@@ -33,7 +33,7 @@ func init() {
 		Use:   "update [id]",
 		Short: "Update user information",
 		Args:  cobra.ExactArgs(1),
-		Run:   updateUser,
+		Run:   UpdateUser,
 	}
 	userUpdateCmd.Flags().StringP("name", "n", "", "New name")
 	userUpdateCmd.Flags().StringP("email", "e", "", "New email")
@@ -43,11 +43,13 @@ func init() {
 		Use:   "delete [id]",
 		Short: "Delete a user",
 		Args:  cobra.ExactArgs(1),
-		Run:   deleteUser,
+		Run:   DeleteUser,
 	}
 
 	// Add user subcommands to user command
 	getUserCommand().AddCommand(userCreateCmd, userGetCmd, userListCmd, userUpdateCmd, userDeleteCmd)
+
+	setupAuthCommands()
 }
 
 // helper method to get command (to be linked from root.go)
@@ -57,16 +59,16 @@ func getUserCommand() *cobra.Command {
 
 func setupAuthCommands() {
 	authLoginCmd := &cobra.Command{
-		Use: "Login [username]",
+		Use:   "Login [username]",
 		Short: "Login to the system",
 		Args:  cobra.ExactArgs(1),
-		Run: login
+		Run:   Login,
 	}
 
 	authLogoutCmd := &cobra.Command{
-		Use: "Logout",
+		Use:   "Logout",
 		Short: "Logout the system",
-		Run: logout,
+		Run:   Logout,
 	}
 
 	getAuthCommand().AddCommand(authLoginCmd, authLogoutCmd)
@@ -76,32 +78,31 @@ func getAuthCommand() *cobra.Command {
 	return &cobra.Command{Use: "auth"} // placeholder
 }
 
-
 // TODO: function to be implemented later
-func createUser(cmd *cobra.Command, args []string) {
+func CreateUser(cmd *cobra.Command, args []string) {
 	fmt.Printf("Creating user: %s, %s, %s\n", args[0], args[1], args[2])
 }
 
-func getUser(cmd *cobra.Command, args []string) {
+func GetUser(cmd *cobra.Command, args []string) {
 	fmt.Printf("Getting user: %s\n", args[0])
 }
 
-func listUsers(cmd *cobra.Command, args []string) {
+func ListUsers(cmd *cobra.Command, args []string) {
 	fmt.Println("Listing all users")
 }
 
-func updateUser(cmd *cobra.Command, args []string) {
+func UpdateUser(cmd *cobra.Command, args []string) {
 	fmt.Printf("Updating user: %s\n", args[0])
 }
 
-func deleteUser(cmd *cobra.Command, args []string) {
+func DeleteUser(cmd *cobra.Command, args []string) {
 	fmt.Printf("Deleting user: %s\n", args[0])
 }
 
-func login(cmd *cobra.Command, args []string) {
+func Login(cmd *cobra.Command, args []string) {
 	fmt.Printf("Logging in user: %s\n", args[0])
 }
 
-func logout(cmd *cobra.Command, args []string) {
+func Logout(cmd *cobra.Command, args []string) {
 	fmt.Println("Logging out")
 }
