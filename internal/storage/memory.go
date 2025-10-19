@@ -45,3 +45,14 @@ func (m *Memory) GetByEmal(email string) (*models.User, error) {
 	}
 	return user, nil
 }
+
+func (m *Memory) GetAll() ([]*models.User, error) {
+	m.um.RLock()
+	defer m.um.RUnlock()
+
+	users := make([]*models.User, 0, len(m.users))
+	for _, user := range m.users {
+		users = append(users, user)
+	}
+	return users, nil
+}
