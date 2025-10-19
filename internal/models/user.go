@@ -25,3 +25,16 @@ func NewUser(name, email string, age int) *User {
 		UpdatedAt: now,
 	}
 }
+
+func (u *User) Validate() error {
+	if u.Name == "" {
+		// TODO: return ErrInvalidUser func if no data provided in user creation
+	}
+	if u.Email == "" {
+		// TODO: ErrInvalidUser
+	}
+	if u.Age < 18 || u.Age > 60 {
+		// return error validator for age
+	}
+	return nil
+}
