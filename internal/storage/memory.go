@@ -23,3 +23,14 @@ func (m *Memory) Create(user *models.User) error {
 	m.users[user.ID] = user
 	return nil
 }
+
+func (m *Memory) GetById(id string) (*models.User, error) {
+	m.um.RLock()
+	defer m.um.RUnlock()
+
+	user, ok := m.users[id]
+	if !ok {
+		return nil, models.ErrUserNotFound
+	}
+	return user, nil
+}
