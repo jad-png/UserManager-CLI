@@ -24,3 +24,13 @@ func Execute() {
 		os.Exit(1)
 	}
 }
+
+func init() {
+	// Global flags
+	rootCmd.PersistentFlags().StringP("config", "c", "", "config file (default is $HOME/.user-manager.yaml)")
+
+	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "verbose output")
+
+	// TODO: add subcommands
+	// exemple: rootCmd.AddCommand(ExempleCmd)
+}
