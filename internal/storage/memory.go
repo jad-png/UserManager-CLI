@@ -5,13 +5,21 @@ import (
 	"sync"
 )
 
-type MemoryStorage struct {
-	users map[string]*models.User
-	mu    sync.RWMutex
+type Memory struct {
+	users map[stringer]*models.User
+	um    sync.RWMutex
 }
 
-func NewMemoryStorage() *MemoryStorage {
-	return &MemoryStorage{
+func NewMemort() *Memory {
+	return &Memory{
 		users: make(map[string]*models.User),
 	}
+}
+
+func (m *Memory) Create(user *models.User) error {
+	m.um.Lock()
+	defer m.um.Unlock()
+
+	m.users[user.ID] = user
+	return nil
 }
