@@ -17,3 +17,10 @@ var rootCmd = &cobra.Command{
 		fmt.Println("Use 'user-manager --help' to see available commands")
 	},
 }
+
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+}
