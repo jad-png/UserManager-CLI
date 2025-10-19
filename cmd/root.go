@@ -7,8 +7,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-import "awesomeProject/cmd/cli"
-
 var rootCmd = &cobra.Command{
 	Use:   "user-manager",
 	Short: "userManager is a CLI for managing users in memory",
@@ -27,79 +25,114 @@ func Execute() {
 	}
 }
 
+// Subcommand definitions
+var (
+	authCmd = &cobra.Command{
+		Use:   "auth",
+		Short: "Authentication operations",
+		Long:  "Manage authentication and user sessions",
+	}
+
+	userCmd = &cobra.Command{
+		Use:   "user",
+		Short: "User management",
+		Long:  "Create, read, update, and delete users",
+	}
+
+	configCmd = &cobra.Command{
+		Use:   "config",
+		Short: "Configuration management",
+		Long:  "View and modify application configuration",
+	}
+
+	versionCmd = &cobra.Command{
+		Use:   "version",
+		Short: "Show version information",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("UserManager CLI v0.1.0")
+		},
+	}
+)
+
 func init() {
 	// Global flags
 	rootCmd.PersistentFlags().StringP("config", "c", "", "config file (default is $HOME/.user-manager.yaml)")
-
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "verbose output")
 
-	// TODO: add subcommands
-	// exemple: rootCmd.AddCommand(ExempleCmd)
-}
+	// Setup subcommands first
+	setupSubcommands()
 
-// TODO: define Subcommands in rootCmd style
-
-var authCmd = &cobra.Command{
-	Use:   "auth",
-	Short: "Authentication operations",
-	Long:  "Manage authentication and user sessions",
-}
-
-var userCmd = &cobra.Command{
-	Use:   "user",
-	Short: "User management",
-	Long:  "Create, read, update, and delete users",
-}
-
-var configCmd = &cobra.Command{
-	Use:   "config",
-	Short: "Configuration management",
-	Long:  "View and modify application configuration",
-}
-
-var versionCmd = &cobra.Command{
-	Use:   "version",
-	Short: "Show version information",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("UserManager CLI v0.1.0")
-	},
+	// Add subcommands to root
+	rootCmd.AddCommand(authCmd, userCmd, configCmd, versionCmd)
 }
 
 func setupSubcommands() {
-	// User subcommands
+	// User subcommands - using simple commands for now
 	userCmd.AddCommand(
-		&cobra.Command{Use: "create",
-			Short: "Create user",
-			Run:   cli.CreateUser,
+		&cobra.Command{
+			Use:   "create [name] [email] [age]",
+			Short: "Create a new user",
+			Args:  cobra.ExactArgs(3),
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Printf("Creating user: %s, %s, %s\n", args[0], args[1], args[2])
+			},
 		},
-
-		&cobra.Command{Use: "get",
-			Short: "Get user",
-			Run:   cli.GetUser,
+		&cobra.Command{
+			Use:   "get [id]",
+			Short: "Get user by ID",
+			Args:  cobra.ExactArgs(1),
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Printf("Getting user: %s\n", args[0])
+			},
 		},
-		&cobra.Command{Use: "list",
-			Short: "List users",
-			Run:   cli.ListUsers,
+		&cobra.Command{
+			Use:   "list",
+			Short: "List all users",
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Println("Listing all users")
+			},
 		},
-		&cobra.Command{Use: "update",
-			Short: "Update user",
-			Run:   cli.UpdateUser,
+		&cobra.Command{
+			Use:   "update [id]",
+			Short: "Update user information",
+			Args:  cobra.ExactArgs(1),
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Printf("Updating user: %s\n", args[0])
+			},
 		},
-		&cobra.Command{Use: "delete",
-			Short: "Delete user",
-			Run:   cli.DeleteUser,
+		&cobra.Command{
+			Use:   "delete [id]",
+			Short: "Delete a user",
+			Args:  cobra.ExactArgs(1),
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Printf("Deleting user: %s\n", args[0])
+			},
 		},
 	)
 
 	// Auth subcommands
 	authCmd.AddCommand(
-		&cobra.Command{Use: "login",
-			Short: "Login",
-			Run:   cli.Login,
+		&cobra.Command{
+			Use:   "login [username]",
+			Short: "Login to the system",
+			Args:  cobra.ExactArgs(1),
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Printf("Logging in user: %s\n", args[0])
+			},
 		},
-		&cobra.Command{Use: "logout",
-			Short: "Logout",
-			Run:   cli.Logout,
+		&cobra.Command{
+			Use:   "logout",
+			Short: "Logout from the system",
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Println("Logging out")
+			},
+		},
+		&cobra.Command{
+			Use:   "status",
+			Short: "Show authentication status",
+			Run: func(cmd *cobra.Command, args []string) {
+				fmt.Println("Authentication status: Not logged in")
+			},
 		},
 	)
 }
