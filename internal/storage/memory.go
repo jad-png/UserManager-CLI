@@ -34,3 +34,14 @@ func (m *Memory) GetById(id string) (*models.User, error) {
 	}
 	return user, nil
 }
+
+func (m *Memory) GetByEmal(email string) (*models.User, error) {
+	m.um.RLock()
+	defer m.um.RUnlock()
+
+	user, ok := m.users[email]
+	if !ok {
+		return nil, models.ErrUserNotFound
+	}
+	return user, nil
+}
