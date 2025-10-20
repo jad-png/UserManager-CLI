@@ -106,6 +106,21 @@ func (m *Memory) Delete(id string) error {
 	return nil
 }
 
+func (m *Memory) Exists(id string) bool {
+	m.um.RLock()
+	defer m.um.RUnlock()
+
+	_, ok := m.users[id]
+	return ok
+}
+
+func (m *Memory) Count() int {
+	m.um.RLock()
+	defer m.um.RUnlock()
+
+	return len(m.users)
+}
+
 // create a deep copy of user to prevent external modification
 func copyUser(user *models.User) *models.User {
 	return &models.User{
