@@ -2,6 +2,7 @@ package storage
 
 import (
 	"awesomeProject/internal/models"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -18,8 +19,22 @@ func NewMemort() *Memory {
 }
 
 func (m *Memory) Create(user *models.User) error {
+	if user == nil {
+		return fmt.Errorf("user cannot be nil")
+	}
+
+	if err := user.Validate(); err != nil {
+		return err
+	}
+
 	m.um.Lock()
 	defer m.um.Unlock()
+
+	for _, u := range m.users {
+		if u.Email == user.Email {
+			return models.ErrUserExists
+		}
+	}
 
 	m.users[user.ID] = user
 	return nil
