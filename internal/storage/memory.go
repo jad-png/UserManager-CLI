@@ -94,6 +94,18 @@ func (m *Memory) Update(id string, user *models.User) error {
 	return nil
 }
 
+func (m *Memory) Delete(id string) error {
+	m.um.Lock()
+	defer m.um.Unlock()
+
+	if _, ok := m.users[id]; !ok {
+		return models.ErrUserNotFound
+	}
+
+	delete(m.users, id)
+	return nil
+}
+
 // create a deep copy of user to prevent external modification
 func copyUser(user *models.User) *models.User {
 	return &models.User{
