@@ -51,15 +51,16 @@ func (m *Memory) GetById(id string) (*models.User, error) {
 	return user, nil
 }
 
-func (m *Memory) GetByEmal(email string) (*models.User, error) {
+func (m *Memory) GetByEmail(email string) (*models.User, error) {
 	m.um.RLock()
 	defer m.um.RUnlock()
 
-	user, ok := m.users[email]
-	if !ok {
-		return nil, models.ErrUserNotFound
+	for _, user := range m.users {
+		if user.Email == email {
+			return copyUser(user), nil
+		}
 	}
-	return user, nil
+	return nil, models.ErrUserNotFound
 }
 
 func (m *Memory) GetAll() ([]*models.User, error) {
