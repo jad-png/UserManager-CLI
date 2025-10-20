@@ -3,10 +3,11 @@ package storage
 import (
 	"awesomeProject/internal/models"
 	"sync"
+	"time"
 )
 
 type Memory struct {
-	users map[stringer]*models.User
+	users map[string]*models.User
 	um    sync.RWMutex
 }
 
@@ -55,4 +56,16 @@ func (m *Memory) GetAll() ([]*models.User, error) {
 		users = append(users, user)
 	}
 	return users, nil
+}
+
+// create a deep copy of user to prevent external modification
+func copyUser(user *models.User) *models.User {
+	return &models.User{
+		ID:        user.ID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Age:       user.Age,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}
 }

@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type User struct {
@@ -28,13 +29,13 @@ func NewUser(name, email string, age int) *User {
 
 func (u *User) Validate() error {
 	if u.Name == "" {
-		// TODO: return ErrInvalidUser func if no data provided in user creation
+		return ErrInvalidUser{Field: "name", Reason: "cannot be empty"}
 	}
 	if u.Email == "" {
-		// TODO: ErrInvalidUser
+		return ErrInvalidUser{Field: "email", Reason: "cannot be empty"}
 	}
-	if u.Age < 18 || u.Age > 60 {
-		// return error validator for age
+	if u.Age < 0 || u.Age > 150 {
+		return ErrInvalidUser{Field: "age", Reason: "must be between 0 and 150"}
 	}
 	return nil
 }
