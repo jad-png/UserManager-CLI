@@ -4,7 +4,6 @@ import (
 	"awesomeProject/internal/models"
 	"fmt"
 	"sync"
-	"time"
 )
 
 type Memory struct {
