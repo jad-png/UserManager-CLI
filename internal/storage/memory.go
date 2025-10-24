@@ -11,7 +11,7 @@ type Memory struct {
 	um    sync.RWMutex
 }
 
-func NewMemort() *Memory {
+func NewMemory() *Memory {
 	return &Memory{
 		users: make(map[string]*models.User),
 	}
