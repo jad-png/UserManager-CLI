@@ -15,3 +15,7 @@ func (ac *AuthCommands) Login(cmd *cobra.Command, args []string) {
 	username := args[0]
 	// TODO: implement login handler logic
 }
+
+func (ac *AuthCommands) Logout(cmd *cobra.Command, args []string) {
+	// TODO: implement logout
+}
