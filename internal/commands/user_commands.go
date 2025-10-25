@@ -23,6 +23,7 @@ func (uc *UserCommands) CreateUser(cmd *cobra.Command, args []string) {
 	name := args[0]
 	email := args[1]
 	age, err := strconv.Atoi(args[2])
+
 	if err != nil {
 		fmt.Printf("Error: age must be a number - %v\n", err)
 		return

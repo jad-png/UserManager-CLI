@@ -13,6 +13,12 @@ func init() {
 }
 
 func setupAuthCommands(authCommands *commands.AuthCommands) {
+
+	var authCmd = &cobra.Command{
+		Use:   "auth",
+		Short: "Authentification operations",
+		Long:  "Manage authentification commands",
+	}
 	authCmd.AddCommand(
 		&cobra.Command{
 			Use:   "login [username]",

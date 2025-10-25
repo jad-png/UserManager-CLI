@@ -14,7 +14,7 @@ func init() {
 	setupUserCommands(userCommands)
 }
 
-func setupUserCommands(commands *commands.UserCommands) {
+func setupUserCommands(userCommands *commands.UserCommands) {
 
 	userCmd := &cobra.Command{
 		Use:   "user",
@@ -26,30 +26,30 @@ func setupUserCommands(commands *commands.UserCommands) {
 			Use:   "create [name] [email] [age]",
 			Short: "Create a new user",
 			Args:  cobra.ExactArgs(3),
-			Run:   commands.CreateUser,
+			Run:   userCommands.CreateUser,
 		},
 		&cobra.Command{
 			Use:   "get [id]",
 			Short: "Get user by ID",
 			Args:  cobra.ExactArgs(1),
-			Run:   commands.GetUser,
+			Run:   userCommands.GetUser,
 		},
 		&cobra.Command{
 			Use:   "list",
 			Short: "List all users",
-			Run:   commands.GetAllUsers,
+			Run:   userCommands.GetAllUsers,
 		},
 		&cobra.Command{
 			Use:   "update [id]",
 			Short: "Update user information",
 			Args:  cobra.ExactArgs(1),
-			Run:   commands.UpdateUser,
+			Run:   userCommands.UpdateUser,
 		},
 		&cobra.Command{
 			Use:   "delete [id]",
 			Short: "Delete a user",
 			Args:  cobra.ExactArgs(1),
-			Run:   commands.DeleteUser,
+			Run:   userCommands.DeleteUser,
 		},
 	)
 
