@@ -4,7 +4,9 @@
 ```sh
     user-manager/
 ├── cmd/
-│   └── cli/           # CLI entry point
+│   └── cli/ # CLI entry point
+    │ └── subcommands.go
+    └── root.go
 ├── internal/
 │   ├── auth/          # Authentication
 │   ├── commands/      # Command handlers
