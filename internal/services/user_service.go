@@ -6,19 +6,19 @@ import (
 )
 
 type Service struct {
-	store storage.Storage
+	userStorage storage.Storage
 }
 
 func NewService(storage storage.Storage) *Service {
 	return &Service{
-		store: storage,
+		userStorage: storage,
 	}
 }
 
 func (s *Service) CreateUser(name, email string, age int) (*models.User, error) {
 	user := models.NewUser(name, email, age)
 
-	if err := s.store.Create(user); err != nil {
+	if err := s.userStorage.Create(user); err != nil {
 		return nil, err
 	}
 
@@ -26,16 +26,16 @@ func (s *Service) CreateUser(name, email string, age int) (*models.User, error) 
 }
 
 func (s *Service) GetUser(id string) (*models.User, error) {
-	return s.store.GetById(id)
+	return s.userStorage.GetById(id)
 }
 
 func (s *Service) GetAll() ([]*models.User, error) {
-	return s.store.GetAll()
+	return s.userStorage.GetAll()
 }
 
 func (s *Service) Update(id string, name, email string, age int) (*models.User, error) {
 
-	user, err := s.store.GetById(id)
+	user, err := s.userStorage.GetById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -49,21 +49,21 @@ func (s *Service) Update(id string, name, email string, age int) (*models.User, 
 		UpdatedAt: user.UpdatedAt,
 	}
 
-	if ok := s.store.Update(id, updatedUser); ok != nil {
+	if ok := s.userStorage.Update(id, updatedUser); ok != nil {
 		return nil, ok
 	}
 
-	return s.store.GetById(id)
+	return s.userStorage.GetById(id)
 }
 
 func (s *Service) Delete(id string) error {
-	return s.store.Delete(id)
+	return s.userStorage.Delete(id)
 }
 
 func (s *Service) Exists(id string) bool {
-	return s.store.Exists(id)
+	return s.userStorage.Exists(id)
 }
 
 func (s *Service) Count() int {
-	return s.store.Count()
+	return s.userStorage.Count()
 }
