@@ -121,3 +121,15 @@ func (uc *UserCommands) UpdateUser(cmd *cobra.Command, args []string) {
 
 	fmt.Printf("User updated successfully!\n")
 }
+
+func (uc *UserCommands) DeleteUser(cmd *cobra.Command, args []string) {
+	id := args[0]
+
+	if err := uc.Storage.Delete(id);
+		err != nil {
+		fmt.Printf("Error: %v\n", err)
+		return
+	}
+
+	fmt.Printf("User deleted successfully!\n")
+}
