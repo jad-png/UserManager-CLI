@@ -84,3 +84,40 @@ func (uc *UserCommands) GetAllUsers(cmd *cobra.Command, args []string) {
 		fmt.Println("-----------------------------------------")
 	}
 }
+
+func (uc *UserCommands) UpdateUser(cmd *cobra.Command, args []string) {
+	id := args[0]
+
+	name, _ := cmd.Flags().GetString("name")
+	email, _ := cmd.Flags().GetString("email")
+	age, _ := cmd.Flags().GetInt("age")
+
+	existingUser, err := uc.Storage.GetById(id)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		return
+	}
+
+	if name == "" {
+		name = existingUser.Name
+	}
+	if email == "" {
+		email = existingUser.Email
+	}
+	if age == 0 {
+		age = existingUser.Age
+	}
+
+	updatedUser := &models.User{
+		Name:  name,
+		Email: email,
+		Age:   age,
+	}
+
+	if err := uc.Storage.Update(id, updatedUser); err != nil {
+		fmt.Printf("Error updating: %v\n", err)
+		return
+	}
+
+	fmt.Printf("User updated successfully!\n")
+}
