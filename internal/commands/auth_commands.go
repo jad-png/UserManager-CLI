@@ -12,7 +12,7 @@ func NewAuthCommands() *AuthCommands {
 }
 
 func (ac *AuthCommands) Login(cmd *cobra.Command, args []string) {
-	username := args[0]
+	//name := args[0]
 	// TODO: implement login handler logic
 }
 
