@@ -1,23 +1,23 @@
 package storage
 
 import (
-	"awesomeProject/internal/auth"
+	"awesomeProject/internal/models"
 	"errors"
 	"sync"
 )
 
 type SessionStorage struct {
-	sessions map[string]*auth.Session
+	sessions map[string]*models.Session
 	mu       sync.RWMutex
 }
 
 func NewSessionStorage() *SessionStorage {
 	return &SessionStorage{
-		sessions: make(map[string]*auth.Session),
+		sessions: make(map[string]*models.Session),
 	}
 }
 
-func (s *SessionStorage) CreateSession(session *auth.Session) error {
+func (s *SessionStorage) CreateSession(session *models.Session) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -25,7 +25,7 @@ func (s *SessionStorage) CreateSession(session *auth.Session) error {
 	return nil
 }
 
-func (s *SessionStorage) GetSession(token string) (*auth.Session, error) {
+func (s *SessionStorage) GetSession(token string) (*models.Session, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -36,15 +36,15 @@ func (s *SessionStorage) GetSession(token string) (*auth.Session, error) {
 	return session, nil
 }
 
-func (s *SessionStorage) DeleteSession(session *auth.Session) error {
+func (s *SessionStorage) DeleteSession(token string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if _, ok := s.sessions[session.ID]; !ok {
+	if _, ok := s.sessions[token]; !ok {
 		return nil
 	}
 
-	delete(s.sessions, session.ID)
+	delete(s.sessions, token)
 	return nil
 }
 
