@@ -4,9 +4,12 @@ import (
 	"awesomeProject/internal/models"
 	"awesomeProject/internal/storage"
 	"fmt"
+	"github.com/spf13/cobra"
 	"strconv"
 
-	"github.com/spf13/cobra"
+	"golang.org/x/term"
+	"os"
+	"syscall"
 )
 
 type UserCommands struct {
@@ -29,7 +32,37 @@ func (uc *UserCommands) CreateUser(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	user := models.NewUser(name, email, age)
+	// --- block to securely read pswrd ---
+	fmt.Print("Enter Password:")
+	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		fmt.Printf("Error reading password: %v\n", err)
+		return
+	}
+	password := string(bytePassword)
+	fmt.Println()
+
+	// -- password confirmation
+	fmt.Print("Confirm Password:")
+	bytePasswordConfirm, err := term.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		fmt.Printf("Error reading password: %v\n", err)
+		return
+	}
+	passwordConfirm := string(bytePasswordConfirm)
+	fmt.Println()
+
+	if password != passwordConfirm {
+		fmt.Println("Passwords do not match")
+		return
+	}
+	// --- end of block ---
+
+	user, err := models.NewUser(name, email, age, password)
+	if err != nil {
+		fmt.Printf("Error creating user: %v\n", err)
+		return
+	}
 
 	if err := uc.Storage.Create(user); err != nil {
 		fmt.Printf("Error creating user: %v\n", err)
