@@ -17,9 +17,9 @@ type User struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 
-func NewUser(name, email string, age int) *User {
+func NewUser(name, email string, age int, password string) (*User, error) {
 	now := time.Now()
-	return &User{
+	user := &User{
 		ID:        uuid.NewString(),
 		Name:      name,
 		Email:     email,
@@ -27,6 +27,12 @@ func NewUser(name, email string, age int) *User {
 		CreatedAt: now,
 		UpdatedAt: now,
 	}
+
+	if err := user.SetPassword(password); err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (u *User) Validate() error {
@@ -62,4 +68,8 @@ func (u *User) SetPassword(password string) error {
 	}
 	u.PasswordHash = string(hash)
 	return nil
+}
+
+func (u *User) CheckPassword(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(password))
 }
