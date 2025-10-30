@@ -1,7 +1,6 @@
 package services
 
 import (
-	"awesomeProject/internal/auth"
 	"awesomeProject/internal/models"
 	"awesomeProject/internal/storage"
 	"time"
@@ -19,16 +18,27 @@ func NewAuthService(userStorage storage.Storage) *AuthService {
 	}
 }
 
-func (s *AuthService) Login(user *models.User) (*auth.Session, error) {
+func (s *AuthService) Login(user *models.User) (*models.Session, error) {
+	// step 1: find user by email
 	user, err := s.userStorage.GetByEmail(user.Email)
 	if err != nil {
 		return nil, models.ErrUserNotFound
 	}
 
-	session := auth.NewSession(user.ID, 24*time.Hour)
+	// step 2: check password
+	if err := user.CheckPassword(user.GetPasswordHash()); err != nil {
+		return nil, models.ErrUserNotFound
+	}
+
+	// step 3; create seession if user was found
+	session := models.NewSession(user.ID, 24*time.Hour)
 	if err := s.sessionStorage.CreateSession(session); err != nil {
 		return nil, err
 	}
 
 	return session, nil
+}
+
+func (s *AuthService) Logout(token string) error {
+	return s.sessionStorage.DeleteSession(token)
 }

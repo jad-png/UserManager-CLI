@@ -70,8 +70,8 @@ func (u *User) SetPassword(password string) error {
 	return nil
 }
 
-func (u *User) GetPasswordHash() (string, error) {
-	return u.PasswordHash, nil
+func (u *User) GetPasswordHash() string {
+	return u.PasswordHash
 }
 
 func (u *User) CheckPassword(password string) error {
