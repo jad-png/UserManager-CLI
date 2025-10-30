@@ -24,7 +24,7 @@ func setupUserCommands(userCommands *commands.UserCommands) {
 	userCmd.AddCommand(
 		&cobra.Command{
 			Use:   "create [name] [email] [age]",
-			Short: "Create a new user",
+			Short: "Create a new user (will prompt for password)",
 			Args:  cobra.ExactArgs(3),
 			Run:   userCommands.CreateUser,
 		},
