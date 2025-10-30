@@ -73,8 +73,8 @@ func (m *Memory) GetAll() ([]*models.User, error) {
 	return users, nil
 }
 
-func (m *Memory) Update(id string, user *models.User) error {
-	if user == nil {
+func (m *Memory) Update(id string, updatedData *models.User) error {
+	if updatedData == nil {
 		return fmt.Errorf("user cannot be nil")
 	}
 	m.um.Lock()
@@ -85,7 +85,7 @@ func (m *Memory) Update(id string, user *models.User) error {
 		return models.ErrUserNotFound
 	}
 
-	user.Update(user.Name, user.Email, user.Age)
+	user.Update(updatedData.Name, updatedData.Email, updatedData.Age)
 
 	if err := user.Validate(); err != nil {
 		return err
